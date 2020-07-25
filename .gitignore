@@ -1,0 +1,7 @@
+### VisualStudioCode ###
+.vscode/*
+# Ignore all local history of files
+**/.history
+
+### Ansible ###
+*.retry

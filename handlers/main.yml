@@ -1,0 +1,5 @@
+---
+- name: logout required
+  debug:
+    msg:
+      - "Warning: Logout required to apply changes."
