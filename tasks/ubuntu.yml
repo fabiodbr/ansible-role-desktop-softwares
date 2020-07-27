@@ -347,6 +347,50 @@
             upgrade: "yes"
             update_cache: yes
 
+- name: "insomnia"
+  when: '"insomnia" is defined and "insomnia" in install'
+  ignore_errors: yes
+  block:
+    - name: "[insomnia]: install check"
+      command: "apt -qq list insomnia"
+      register: installcheck
+      changed_when: false
+    - name: "install"
+      when: installcheck.stdout.find("installed") == -1
+      block:
+        - name: "[insomnia]: apt-keys"
+          apt_key:
+            url: "https://insomnia.rest/keys/debian-public.key.asc"
+            state: present
+        - name: "[insomnia]: repository"
+          apt_repository:
+            repo: "deb https://dl.bintray.com/getinsomnia/Insomnia /"
+            filename: "insomnia"
+        - name: "[insomnia]: install"
+          apt:
+            name: insomnia
+            state: latest
+
+- name: "obs-studio"
+  when: '"obs-studio" is defined and "obs-studio" in install'
+  ignore_errors: yes
+  block:
+    - name: "[obs-studio]: install check"
+      command: "apt -qq list obs-studio"
+      register: installcheck
+      changed_when: false
+    - name: "install"
+      when: installcheck.stdout.find("installed") == -1
+      block:
+        - name: "[obs-studio]: ppa"
+          apt_repository:
+            repo: "ppa:obsproject/obs-studio"
+            validate_certs: no
+        - name: "[obs-studio]: install"
+          apt:
+            name: obs-studio
+            state: latest
+
 - name: "keybase"
   when: '"keybase" is defined and "keybase" in install'
   block:
