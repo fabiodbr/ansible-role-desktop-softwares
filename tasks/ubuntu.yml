@@ -120,11 +120,11 @@
 - name: bash-powerline-shell
   when: '"bash-powerline-shell" is defined and "bash-powerline-shell" in install'
   block:
-    - name: "[bash-powerline-shell]: powerline-shell"
+    - name: "[bash-powerline-shell]: powerline-shell" # noqa 403
       pip:
         name: powerline-shell
         state: latest
-    - name: "[bash-powerline-shell]: fonts-powerline"
+    - name: "[bash-powerline-shell]: fonts-powerline" # noqa 403
       apt:
         name: "fonts-powerline"
         state: latest
@@ -213,7 +213,7 @@
       loop:
         - "/home/{{ user }}/.themes"
         - "/home/{{ user }}/.icons"
-    - name: "[gnome-themes-github]: copying"
+    - name: "[gnome-themes-github]: copying" # noqa 401
       git:
         repo: "{{ item.repo }}"
         depth: 1
@@ -290,7 +290,7 @@
     - name: "[google-cloud-sdk]: repository"
       apt_repository:
         repo: "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main"
-    - name: "[google-cloud-sdk]: packages"
+    - name: "[google-cloud-sdk]: packages" # noqa 403
       apt:
         name: "{{ item }}"
         state: latest
@@ -531,7 +531,7 @@
       apt_repository:
         repo: "deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran35/"
         validate_certs: no
-    - name: "[r-base]: packages"
+    - name: "[r-base]: packages" # noqa 403
       apt:
         name: "{{ item }}"
         state: latest
@@ -582,7 +582,7 @@
   tags: programming, python
   when: '"python3-packages" is defined and "python3-packages" in install'
   block:
-    - name: "[python3-packages]: Install Python 3"
+    - name: "[python3-packages]: Install Python 3" # noqa 403
       apt:
         dpkg_options: "force-confold,force-confdef"
         autoremove: yes
@@ -603,6 +603,7 @@
         - eradicate #
         - vulture # https://pypi.org/project/vulture/ - find unused code
         - coverage # https://pypi.org/project/coverage/ - python code analysis
+        - pre-commit # pre-commit hooks
         - pylint # https://pypi.org/project/pylint/ - linter
         - mypy # https://pypi.org/project/mypy/
         - bandit # https://pypi.org/project/bandit/ - security testing
@@ -616,7 +617,7 @@
         repo: "ppa:gnome-terminator/nightly-gtk3"
         validate_certs: no
         codename: trusty
-    - name: "[terminator]:: install"
+    - name: "[terminator]: install" # noqa 403
       apt:
         name: terminator
         state: latest
@@ -666,7 +667,7 @@
       apt:
         upgrade: "yes"
         update_cache: yes
-    - name: "[virtualbox]: install"
+    - name: "[virtualbox]: install" # noqa 403
       apt:
         name: virtualbox
         state: latest
