@@ -1,3 +1,5 @@
+[![](https://sourcerer.io/fame/fabiodbr/fabiodbr/ansible-role-desktop-softwares/images/0)](https://sourcerer.io/fame/fabiodbr/fabiodbr/ansible-role-desktop-softwares/links/0)[![](https://sourcerer.io/fame/fabiodbr/fabiodbr/ansible-role-desktop-softwares/images/1)](https://sourcerer.io/fame/fabiodbr/fabiodbr/ansible-role-desktop-softwares/links/1)[![](https://sourcerer.io/fame/fabiodbr/fabiodbr/ansible-role-desktop-softwares/images/2)](https://sourcerer.io/fame/fabiodbr/fabiodbr/ansible-role-desktop-softwares/links/2)[![](https://sourcerer.io/fame/fabiodbr/fabiodbr/ansible-role-desktop-softwares/images/3)](https://sourcerer.io/fame/fabiodbr/fabiodbr/ansible-role-desktop-softwares/links/3)[![](https://sourcerer.io/fame/fabiodbr/fabiodbr/ansible-role-desktop-softwares/images/4)](https://sourcerer.io/fame/fabiodbr/fabiodbr/ansible-role-desktop-softwares/links/4)[![](https://sourcerer.io/fame/fabiodbr/fabiodbr/ansible-role-desktop-softwares/images/5)](https://sourcerer.io/fame/fabiodbr/fabiodbr/ansible-role-desktop-softwares/links/5)[![](https://sourcerer.io/fame/fabiodbr/fabiodbr/ansible-role-desktop-softwares/images/6)](https://sourcerer.io/fame/fabiodbr/fabiodbr/ansible-role-desktop-softwares/links/6)[![](https://sourcerer.io/fame/fabiodbr/fabiodbr/ansible-role-desktop-softwares/images/7)](https://sourcerer.io/fame/fabiodbr/fabiodbr/ansible-role-desktop-softwares/links/7)
+
 Ansible Role: fabiodbr.desktop-softwares
 =========
 
@@ -28,7 +30,7 @@ Example Playbook
 - hosts: localhost
   connection: local
   roles:
-    - role: fabiodbr-softwares
+    - role: ansible-role-desktop-softwares
       become: yes
       vars:
         install:
