@@ -199,6 +199,9 @@
 #         state: latest
 #         cache_valid_time: 3600
 
+# https://lettier.github.io/gifcurry/
+
+
 - name: "Gnome themes and icons from github"
   become: yes
   become_user: "{{ user }}"
@@ -210,6 +213,9 @@
       file:
         path: "{{ item }}"
         state: directory
+        owner: "{{ user }}"
+        group: "{{ user }}"
+        mode: ug+rwx,o-rwx
       loop:
         - "/home/{{ user }}/.themes"
         - "/home/{{ user }}/.icons"
