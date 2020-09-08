@@ -201,12 +201,10 @@
 
 # https://lettier.github.io/gifcurry/
 
-
 - name: "Gnome themes and icons from github"
   become: yes
   become_user: "{{ user }}"
   ignore_errors: yes
-  tags: gnome, themes
   when: '"gnome-themes-github" is defined and "gnome-themes-github" in install'
   block:
     - name: "[gnome-themes-github]: local folders"
@@ -221,30 +219,18 @@
         - "/home/{{ user }}/.icons"
     - name: "[gnome-themes-github]: copying" # noqa 401
       git:
-        repo: "{{ item.repo }}"
+        repo: "https://github.com/{{ item.user }}/{{ item.repo }}.git"
         depth: 1
-        dest: "/home/{{ user }}/.themes/{{ item.name }}"
+        dest: "/home/{{ user }}/.themes/{{ item.dir }}"
         force: yes
       with_items:
-        - { repo: "https://github.com/EliverLara/Ant.git", name: "Ant" }
-        - {
-            repo: "https://github.com/keeferrourke/la-capitaine-icon-theme.git",
-            name: "La-Capitaine",
-          }
-        - {
-            repo: "https://github.com/btd1337/La-Sierra-Icon-Theme",
-            name: "La-Sierra",
-          }
-        - { repo: "https://github.com/EliverLara/Nordic.git", name: "Nordic" }
-        - {
-            repo: "https://github.com/EliverLara/Nordic-Polar.git",
-            name: "Nordic-Polar",
-          }
-        - {
-            repo: "https://github.com/btd1337/eOS-Sierra-Gtk.git",
-            name: "eOS-Sierra",
-          }
-    - name: "MacOS Themes"
+        - { user: "EliverLara", repo: "Ant", dir: "Ant" }
+        - { user: "keeferrourke", repo: la-capitaine-icon-theme, dir: "La-Capitaine" }
+        - { user: "btd1337", repo: "La-Sierra-Icon-Theme", dir: "La-Sierra" }
+        - { user: "EliverLara", repo: "Nordic", dir: "Nordic" }
+        - { user: "EliverLara", repo: "Nordic-Polar", dir: "Nordic-Polar" }
+        - { user: "btd1337", repo: "eOS-Sierra-Gtk", dir: "eOS-Sierra" }
+    - name: "Gnome-Mc-OS"
       block:
         - name: "[gnome-themes-github: Gnome-Mc-OS]: git clone"
           git:
@@ -376,6 +362,43 @@
           apt:
             name: insomnia
             state: latest
+
+- name: "mcos-bigsur"
+  become: yes
+  become_user: "{{ user }}"
+  ignore_errors: yes
+  when: '"mcos-bigsur" is defined and "mcos-bigsur" in install'
+  block:
+    - name: "[mcos-bigsur]: icons folder name"
+      set_fact:
+        gnome_icons_dir: "/home/{{ user }}/.icons"
+        gnome_themes_dir: "/home/{{ user }}/.themes"
+    - name: "[mcos-bigsur]: create theme folders"
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ user }}"
+        group: "{{ user }}"
+        mode: ug+rwx,o-rwx
+      loop:
+       - "{{ gnome_icons_dir }}"
+       - "{{ gnome_themes_dir }}"
+    - name: "[mcos-bigsur]: copying icons" # noqa 401
+      git:
+        repo: "https://github.com/{{ item.user }}/{{ item.repo }}.git"
+        depth: 1
+        dest: "{{ gnome_icons_dir }}/{{ item.dirname }}"
+        force: yes
+      with_items:
+        - { user: "zayronxio", repo: "Mkos-Big-Sur", dirname: "Mkos-Big-Sur" }
+    - name: "[mcos-bigsur]: copying themes" # noqa 401
+      git:
+        repo: "https://github.com/{{ item.user }}/{{ item.repo }}.git"
+        depth: 1
+        dest: "{{ gnome_themes_dir }}/{{ item.dirname }}"
+        force: yes
+      with_items:
+        - { user: "zayronxio", repo: "Mkosbigsur-gtk", dirname: "Mkosbigsur-gtk" }
 
 - name: "obs-studio"
   when: '"obs-studio" is defined and "obs-studio" in install'
