@@ -381,8 +381,8 @@
         group: "{{ user }}"
         mode: ug+rwx,o-rwx
       loop:
-       - "{{ gnome_icons_dir }}"
-       - "{{ gnome_themes_dir }}"
+        - "{{ gnome_icons_dir }}"
+        - "{{ gnome_themes_dir }}"
     - name: "[mcos-bigsur]: copying icons" # noqa 401
       git:
         repo: "https://github.com/{{ item.user }}/{{ item.repo }}.git"
@@ -399,6 +399,7 @@
         force: yes
       with_items:
         - { user: "zayronxio", repo: "Mkosbigsur-gtk", dirname: "Mkosbigsur-gtk" }
+        - { user: "B00merang-Project", repo: "macOS-Dark", dirname: "macOS-Dark" }
 
 - name: "obs-studio"
   when: '"obs-studio" is defined and "obs-studio" in install'
@@ -607,6 +608,30 @@
             name: "paper-icon-theme"
             state: latest
 
+- name: "pulseeffects"
+  when: '"pulseeffects" is defined and "pulseeffects" in install'
+  ignore_errors: yes
+  block:
+    - name: "[pulseeffects]: install check"
+      command: "apt -qq list pulseeffects"
+      register: installcheck
+      changed_when: false
+    - name: "[pulseeffects]: install"
+      when: installcheck.stdout.find("installed") == -1
+      block:
+        - name: "[pulseeffects]: ppa"
+          apt_repository:
+            repo: "ppa:mikhailnov/pulseeffects"
+            validate_certs: no
+        - name: "[pulseeffects]: install"
+          apt:
+            name: pulseeffects
+            install_recommends: yes
+            state: latest
+
+
+
+
 - name: python3-packages
   tags: programming, python
   when: '"python3-packages" is defined and "python3-packages" in install'
@@ -781,3 +806,31 @@
             # # How to exclude extensions
             # visual_studio_code_extensions_absent:
             #   - seanmcbreen.Spell
+
+
+- name: "zafiro-icons"
+  become: yes
+  become_user: "{{ user }}"
+  ignore_errors: yes
+  when: '"zafiro-icons" is defined and "zafiro-icons" in install'
+  block:
+    - name: "[zafiro-icons]: icons folder name"
+      set_fact:
+        gnome_icons_dir: "/home/{{ user }}/.icons"
+    - name: "[zafiro-icons]: create icons folders"
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ user }}"
+        group: "{{ user }}"
+        mode: ug+rwx,o-rwx
+      loop:
+        - "{{ gnome_icons_dir }}"
+    - name: "[zafiro-icons]: copying icons" # noqa 401
+      git:
+        repo: "https://github.com/{{ item.user }}/{{ item.repo }}.git"
+        depth: 1
+        dest: "{{ gnome_icons_dir }}/{{ item.dirname }}"
+        force: yes
+      with_items:
+        - { user: "zayronxio", repo: "Mkos-Big-Sur", dirname: "Mkos-Big-Sur" }
